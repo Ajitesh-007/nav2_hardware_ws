@@ -1,0 +1,13 @@
+<library path="my_robot_hardware">
+  <class
+    name="my_robot_hardware/SerialHardwareInterface"
+    type="my_robot_hardware::SerialHardwareInterface"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Custom ros2_control hardware interface for a 6-wheel skid-steer rover.
+      Communicates with an ESP32 over USB serial using a simple text protocol:
+        PC  → ESP32 : "CMD:&lt;left_pwm&gt;,&lt;right_pwm&gt;\n"  (-255 to 255)
+        ESP32 → PC  : "OK\n"
+    </description>
+  </class>
+</library>
