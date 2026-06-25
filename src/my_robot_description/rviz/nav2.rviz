@@ -49,10 +49,108 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz_default_plugins/Image
+      Name: RGB Camera
+      Enabled: true
+      Topic:
+        Value: /zed/zed_node/rgb/image_rect_color
+        Depth: 5
+        Reliability Policy: Best Effort
+        History Policy: Keep Last
+        Durability Policy: Volatile
+    - Class: rviz_default_plugins/PointCloud2
+      Name: Point Cloud
+      Enabled: true
+      Topic:
+        Value: /zed/zed_node/point_cloud/cloud_registered
+        Depth: 5
+        Reliability Policy: Best Effort
+        History Policy: Keep Last
+        Durability Policy: Volatile
+      Size (m): 0.01
+      Color Transformer: RGB8
+      Alpha: 1
+    - Class: rviz_default_plugins/Image
+      Name: Depth Map
+      Enabled: true
+      Topic:
+        Value: /zed/zed_node/depth/depth_registered
+        Depth: 5
+        Reliability Policy: Best Effort
+        History Policy: Keep Last
+        Durability Policy: Volatile
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: true
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Marker Scale: 0.3
+      Update Interval: 0
+    - Alpha: 0.7
+      Class: rviz_default_plugins/Map
+      Name: Global Costmap
+      Enabled: true
+      Topic:
+        Value: /global_costmap/costmap
+        Depth: 5
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Durability Policy: Volatile
+    - Alpha: 0.7
+      Class: rviz_default_plugins/Map
+      Name: Local Costmap
+      Enabled: true
+      Topic:
+        Value: /local_costmap/costmap
+        Depth: 5
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Durability Policy: Volatile
+    - Alpha: 0.7
+      Class: rviz_default_plugins/Map
+      Name: RTAB-Map
+      Enabled: true
+      Topic:
+        Value: /map
+        Depth: 5
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Durability Policy: Volatile
+    - Class: rviz_default_plugins/Path
+      Name: Global Path
+      Enabled: true
+      Topic:
+        Value: /plan
+        Depth: 5
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Durability Policy: Volatile
+      Color: 0; 255; 0
+    - Class: rviz_default_plugins/Path
+      Name: Local Path
+      Enabled: true
+      Topic:
+        Value: /local_plan
+        Depth: 5
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Durability Policy: Volatile
+      Color: 255; 0; 0
+    - Class: rviz_default_plugins/Odometry
+      Name: ZED Odometry
+      Enabled: true
+      Topic:
+        Value: /zed/zed_node/odom
+        Depth: 5
+        Reliability Policy: Best Effort
+        History Policy: Keep Last
+        Durability Policy: Volatile
+      Keep: 100
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: odom
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
