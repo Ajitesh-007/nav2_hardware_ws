@@ -23,6 +23,8 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
     nav2_params_file = os.path.join(
         pkg_my_robot_navigation, 'config', 'nav2_params.yaml')
+    ekf_params_file = os.path.join(
+        pkg_my_robot_navigation, 'config', 'ekf_params.yaml')
 
     # ── 1. Nav2 Navigation Stack ────────────────────────────────────────────────
     #    Uses nav2_bringup's navigation_launch.py which starts:
@@ -72,7 +74,7 @@ def generate_launch_description():
             'Vis/MaxFeatures': '500',
         }],
         remappings=[
-            ('odom', '/zed/zed_node/odom'),
+            ('odom', '/odometry/local'),
             ('rgb/image', '/zed/zed_node/rgb/image_rect_color'),
             ('rgb/camera_info', '/zed/zed_node/rgb/camera_info'),
             ('depth/image', '/zed/zed_node/depth/depth_registered'),
@@ -94,7 +96,7 @@ def generate_launch_description():
             'use_sim_time': use_sim_time,
         }],
         remappings=[
-            ('odom', '/zed/zed_node/odom'),
+            ('odom', '/odometry/local'),
             ('rgb/image', '/zed/zed_node/rgb/image_rect_color'),
             ('rgb/camera_info', '/zed/zed_node/rgb/camera_info'),
             ('depth/image', '/zed/zed_node/depth/depth_registered'),
@@ -103,9 +105,34 @@ def generate_launch_description():
         # condition=IfCondition(LaunchConfiguration('rtabmap_viz', default='false')),
     )
 
+    # ── 4. Robot Localization (Sensor Fusion) ───────────────────────────────────
+    ekf_local = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_local',
+        output='screen',
+        parameters=[ekf_params_file],
+        remappings=[('odometry/filtered', '/odometry/local')]
+    )
+
+    navsat_transform = Node(
+        package='robot_localization',
+        executable='navsat_transform_node',
+        name='navsat_transform',
+        output='screen',
+        parameters=[ekf_params_file],
+        remappings=[
+            ('imu', '/zed/zed_node/imu/data'),
+            ('gps/fix', '/gps/fix'),
+            ('odometry/filtered', '/odometry/local')
+        ]
+    )
+
     return LaunchDescription([
         use_sim_time_arg,
         camera_model_arg,
+        ekf_local,
+        navsat_transform,
         nav2,
         rtabmap,
         # Uncomment rtabmap_viz below if you want the RTAB-Map visualization window:
