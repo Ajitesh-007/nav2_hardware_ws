@@ -206,8 +206,9 @@ SerialHardwareInterface::export_command_interfaces()
 hardware_interface::return_type SerialHardwareInterface::read(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
 {
-  // No encoders → estimate state from commanded velocity (open-loop integration)
-  // ZED2i visual odometry is used by RTAB-Map; this just keeps ros2_control happy.
+  // No encoders → estimate state from commanded velocity (open-loop integration).
+  // These "fake" encoder positions are fed into diff_drive_controller, which 
+  // passes them to our EKF filter to fuse with the ZED IMU for robot odometry.
   hw_velocities_[0] = hw_commands_[0];
   hw_velocities_[1] = hw_commands_[1];
   hw_positions_[0] += hw_commands_[0] * period.seconds();
